@@ -7,7 +7,7 @@ const socket = io("http://localhost:5443");
 function App() {
   const [sensorData, setSensorData] = useState({});
 
-  const [successRate,setSuccessRate] = useState(0)
+  const [successRate, setSuccessRate] = useState(0);
 
   useEffect(() => {
     // Use useEffect to subscribe to the socket event when the component mounts
@@ -21,13 +21,11 @@ function App() {
       });
     });
 
-    socket.on('successRate',(success)=>{
-      console.log(success,'success Rate')
-      
-      setSuccessRate(parseInt(success))
+    socket.on("successRate", (success) => {
+      console.log(success, "success Rate");
 
-
-    })
+      setSuccessRate(parseInt(success));
+    });
     // Clean up the socket connection when the component unmounts
     return () => {
       socket.off("data");
@@ -37,7 +35,9 @@ function App() {
   return (
     <div className="container">
       <h1 className="text-center m-5 pt-3">TimeSeries Log</h1>
-      <h5 className="text-end">SuccessRate -{successRate}%</h5>
+      {Object.keys(sensorData).length > 0 && (
+        <h5 className="text-end">SuccessRate -{successRate}%</h5>
+      )}
       {Object.keys(sensorData).length > 0 ? (
         Object.keys(sensorData).map((timestamp, i) => {
           const sensorDatum = sensorData[timestamp];
